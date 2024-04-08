@@ -41,9 +41,9 @@ void x_task() {
     while (true) {
         adc_select_input(0);
         int result_x = adc_read();
-        result_x = (result_x/8) - 255;
+        result_x = (result_x/64) - 32;
 
-        if (result_x > 30 || result_x < -30) {
+        if (result_x > 16 || result_x < -16) {
             values_x[cont_x%5] = result_x;
             cont_x++;
             
@@ -55,6 +55,8 @@ void x_task() {
             x_command.val = soma_x/5;
             x_command.axis = 0;
             xQueueSend(xQueueAdc, &x_command, 0);
+
+            vTaskDelay(pdMS_TO_TICKS(100));
         }
     }
 }
@@ -69,9 +71,9 @@ void y_task() {
     while (true) {
         adc_select_input(1);
         int result_y = adc_read();
-        result_y = (result_y/8) - 255;
+        result_y = (result_y/64) - 32;
 
-        if (result_y > 30 || result_y < -30) {
+        if (result_y > 16 || result_y < -16) {
             values_y[cont_y%5] = result_y;
             cont_y++;
             
@@ -83,6 +85,8 @@ void y_task() {
             y_command.val = soma_y/5;
             y_command.axis = 1;
             xQueueSend(xQueueAdc, &y_command, 0);
+
+            vTaskDelay(pdMS_TO_TICKS(100));
         }
     }
 }
