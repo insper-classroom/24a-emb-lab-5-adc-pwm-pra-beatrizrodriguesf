@@ -43,16 +43,18 @@ void x_task() {
         int result_x = adc_read();
         result_x = (result_x/64) - 32;
 
-        if (result_x > 16 || result_x < -16) {
-            values_x[cont_x%5] = result_x;
-            cont_x++;
+        values_x[cont_x%5] = result_x;
+        cont_x++;
             
-            int soma_x = 0;
-            for (int i = 0; i < 5; i++) {
-                soma_x += values_x[i];
-            }
+        int soma_x = 0;
+        for (int i = 0; i < 5; i++) {
+            soma_x += values_x[i];
+        }
+        soma_x /= 5;
 
-            x_command.val = soma_x/5;
+        if (soma_x > 16 || soma_x < -16) {
+
+            x_command.val = soma_x;
             x_command.axis = 0;
             xQueueSend(xQueueAdc, &x_command, 0);
 
@@ -73,16 +75,18 @@ void y_task() {
         int result_y = adc_read();
         result_y = (result_y/64) - 32;
 
-        if (result_y > 16 || result_y < -16) {
-            values_y[cont_y%5] = result_y;
-            cont_y++;
+        values_y[cont_y%5] = result_y;
+        cont_y++;
             
-            int soma_y = 0;
-            for (int i = 0; i < 5; i++) {
-                soma_y += values_y[i];
-            }
+        int soma_y = 0;
+        for (int i = 0; i < 5; i++) {
+            soma_y += values_y[i];
+        }
+        soma_y /= 5;
 
-            y_command.val = soma_y/5;
+        if (soma_y > 16 || soma_y < -16) {
+
+            y_command.val = soma_y;
             y_command.axis = 1;
             xQueueSend(xQueueAdc, &y_command, 0);
 
